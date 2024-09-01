@@ -615,7 +615,61 @@ run_lister(Application_Links *app, Lister *lister){
                             handled = false;
                         }
                     }break;
-                    
+
+                    case KeyCode_P:
+                    {
+                        // NOTE(lida): Ctrl-P does the same thing as Up
+                        Input_Modifier_Set* mset = &in.event.key.modifiers;
+                        // check if control was pressed. TODO: there's possibly a better way to do this,
+                        // but I'm unfamiliar with the 4coder code base.
+                        bool control_pressed = false;
+                        for (int i = 0; i < mset->count; i++) {
+                            if (mset->mods[i] == KeyCode_Control) {
+                                control_pressed = true;
+                                break;
+                            }
+                        }
+                        if (control_pressed) {
+                            if (lister->handlers.navigate != 0){
+                                // move up
+                                lister->handlers.navigate(app, view, lister, -1);
+                            }
+                        }
+                        else if (lister->handlers.key_stroke != 0){
+                            result = lister->handlers.key_stroke(app);
+                        }
+                        else{
+                            handled = false;
+                        }
+                    }break;
+                    case KeyCode_N:
+                    {
+                        // NOTE(lida): Ctrl-N does the same thing as Down
+                        Input_Modifier_Set* mset = &in.event.key.modifiers;
+                        // check if control was pressed. TODO: there's possibly a better way to do this,
+                        // but I'm unfamiliar with the 4coder code base.
+                        bool control_pressed = false;
+                        for (int i = 0; i < mset->count; i++) {
+                            if (mset->mods[i] == KeyCode_Control) {
+                                control_pressed = true;
+                                break;
+                            }
+                        }
+                        if (control_pressed) {
+                            if (lister->handlers.navigate != 0){
+                                // move down
+                                lister->handlers.navigate(app, view, lister, 1);
+                            }
+                        }
+                        else if (lister->handlers.key_stroke != 0){
+                            result = lister->handlers.key_stroke(app);
+                        }
+                        else{
+                            handled = false;
+                        }
+                    }break;
+
+
                     default:
                     {
                         if (lister->handlers.key_stroke != 0){
