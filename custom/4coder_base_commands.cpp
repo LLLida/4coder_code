@@ -977,12 +977,16 @@ isearch(Application_Links *app, Scan_Direction start_scan, i64 first_pos,
         Scan_Direction change_scan = scan;
         if (!string_change){
             if (match_key_code(&in, KeyCode_PageDown) ||
-                match_key_code(&in, KeyCode_Down)){
+                match_key_code(&in, KeyCode_Down) ||
+                // NOTE(lida): Ctrl-N searches forward too
+                match_key_code_with_modifier(&in, KeyCode_N, KeyCode_Control)){
                 change_scan = Scan_Forward;
                 do_scan_action = true;
             }
             else if (match_key_code(&in, KeyCode_PageUp) ||
-                     match_key_code(&in, KeyCode_Up)){
+                     match_key_code(&in, KeyCode_Up) ||
+                     // NOTE(lida): Ctrl-P searches backward too
+                     match_key_code_with_modifier(&in, KeyCode_P, KeyCode_Control)){
                 change_scan = Scan_Backward;
                 do_scan_action = true;
             }

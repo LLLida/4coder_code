@@ -1442,6 +1442,11 @@ match_key_code(User_Input *in, Key_Code key_code){
 }
 
 function b32
+match_key_code_with_modifier(User_Input *in, Key_Code key_code, Key_Code modifier){
+    return(match_key_code_with_modifier(&in->event, key_code, modifier));
+}
+
+function b32
 match_core_code(User_Input *in, Key_Code core_code){
     return(match_core_code(&in->event, core_code));
 }

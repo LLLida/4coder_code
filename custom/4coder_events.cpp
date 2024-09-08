@@ -176,6 +176,23 @@ match_key_code(Input_Event *event, Key_Code code){
 }
 
 function b32
+match_key_code_with_modifier(Input_Event* event, Key_Code code, Key_Code modifier){
+    if (event->kind != InputEventKind_KeyStroke || event->key.code != code){
+        return false;
+    }
+    // NOTE(lida): check if control was pressed. TODO: there's possibly a better way to do this,
+    // but I'm unfamiliar with the 4coder code base.
+    Input_Modifier_Set* mset = &event->key.modifiers;
+    bool control_pressed = false;
+    for (int i = 0; i < mset->count; i++) {
+        if (mset->mods[i] == KeyCode_Control) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function b32
 match_mouse_code(Input_Event *event, Mouse_Code code){
     return(event->kind == InputEventKind_MouseButton && event->mouse.code == code);
 }
